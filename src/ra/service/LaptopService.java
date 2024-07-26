@@ -2,15 +2,12 @@ package ra.service;
 
 import ra.entity.Laptop;
 import ra.entity.LaptopType;
-
-import java.util.Arrays;
 import java.util.Scanner;
-import static ra.service.LaptopTypeService.laptopTypes;
+
 public class LaptopService {
     static Scanner sc = new Scanner(System.in);
     private static int size = 0;
     private static Laptop[] laptops = new Laptop[10];
-
 
     public static void displayLaptop() {
         if (size == 0) {
@@ -18,7 +15,9 @@ public class LaptopService {
             return;
         }
         for (int i = 0; i < size; i++) {
-            System.out.println(laptops[i]);
+            Laptop laptop = laptops[i];
+            String typeName = LaptopTypeService.getTypeNameById(laptop.getTypeId());
+            System.out.println(laptop + " - Type: " + typeName);
         }
     }
 
@@ -30,6 +29,19 @@ public class LaptopService {
         }
         Laptop laptop = new Laptop();
         laptop.inputData();
+
+        // Display available LaptopTypes
+        LaptopTypeService.displayLaptopTypes();
+        System.out.print("Chọn typeId cho laptop: ");
+        int typeId = Integer.parseInt(sc.nextLine());
+
+        if (LaptopTypeService.isTypeIdValid(typeId)) {
+            laptop.setTypeId(typeId);
+        } else {
+            System.out.println("typeId không hợp lệ, thêm thất bại.");
+            return;
+        }
+
         laptops[size++] = laptop;
         System.out.println("Thêm thành công.");
     }
@@ -46,7 +58,7 @@ public class LaptopService {
                 return;
             }
         }
-        System.out.println("Laptop với id " + id + " không tìm thấy.");
+        System.out.println("Laptop với id " + id +" không tìm thấy.");
     }
 
     public static void deleteLaptop() {
@@ -63,10 +75,23 @@ public class LaptopService {
                 return;
             }
         }
-        System.out.println("Laptop với id " + id + " không tìm thấy.");
+        System.out.println("Laptop với id " + id + "không tìm thấy.");
     }
+    public static void countLaptopsByType() {
+        if (size == 0) {
+            System.out.println("Danh sách rỗng.");
+            return;
+        }
+        int[] typeCount = new int[LaptopTypeService.getSize()];
+        for (int i = 0; i < size; i++) {
+            int typeId = laptops[i].getTypeId();
+            typeCount[typeId - 1]++;
+        }
 
-    public static void typeLaptopWithLaptop(){
+        System.out.println("Số lượng laptop theo từng loại:");
+        for (int i = 0; i < typeCount.length; i++) {
+            String typeName = LaptopTypeService.getTypeNameById(i + 1);
+            System.out.println("Loại " + typeName + ": " + typeCount[i] + " laptop(s)");
+        }
     }
-
 }

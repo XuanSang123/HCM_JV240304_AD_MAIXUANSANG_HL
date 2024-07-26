@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class LaptopTypeService {
     private static final Scanner sc = new Scanner(System.in);
     private static int size = 0;
-    static LaptopType[] laptopTypes = new LaptopType[10];
+    private static LaptopType[] laptopTypes = new LaptopType[10];
 
     public static void displayLaptopTypes() {
         if (size == 0) {
@@ -63,7 +63,26 @@ public class LaptopTypeService {
             }
         }
         System.out.println("Không tìm thấy thể loại laptop với ID " + id + ".");
-
-        }
-
     }
+
+    public static String getTypeNameById(int typeId) {
+        for (int i = 0; i < size; i++) {
+            if (laptopTypes[i].getTypeId() == typeId) {
+                return laptopTypes[i].getTypeName();
+            }
+        }
+        return "Unknown";
+    }
+
+    public static boolean isTypeIdValid(int typeId) {
+        for (int i = 0; i < size; i++) {
+            if (laptopTypes[i].getTypeId() == typeId) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static int getSize() {
+        return size;
+    }
+}

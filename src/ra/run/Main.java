@@ -101,7 +101,7 @@ public class Main {
                         laptopService.deleteLaptop();
                         break;
                     case 5:
-                        laptopService.typeLaptopWithLaptop();
+                        laptopService.countLaptopsByType();
                         break;
                     case 6:
                         return;
